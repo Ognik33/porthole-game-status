@@ -1,0 +1,39 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install mingw-w64
+        run: sudo apt-get update && sudo apt-get install -y gcc-mingw-w64-x86-64 zip
+      - name: Install Luau
+        run: |
+          curl -sSfL -o luau.zip https://github.com/luau-lang/luau/releases/download/0.744/luau-ubuntu.zip
+          unzip -q luau.zip -d "$HOME/luau" && echo "$HOME/luau" >> "$GITHUB_PATH"
+      - name: Tests (probe, agent protocol, Luau)
+        run: bash tools/test.sh
+      - name: Build .paddon
+        run: bash tools/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: game-status
+          path: |
+            dist/*.paddon
+            dist/game_probe_cli.exe
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.paddon
+            dist/game_probe_cli.exe

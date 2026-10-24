@@ -1,0 +1,27 @@
+name = "game-status"
+title = "Game status"
+summary = "Badges for open game worlds in the lobby: version, world name, players online. Friends with this add-on see them too."
+version = "0.2.3"
+author = "Ognik33"
+api_version = 1
+entry = "main.luau"
+capabilities = ["ui", "identity", "roster", "net", "run_helper", "system"]
+natives = ["game_probe"]
+elevates = false
+lobby_role = "cosmetic"
+platforms = ["windows"]
+
+[settings.carousel]
+default = "on"
+kind = "toggle"
+order = 0
+
+[settings.show_players]
+default = "on"
+kind = "toggle"
+order = 1
+
+[settings.hide_names]
+default = "off"
+kind = "toggle"
+order = 2

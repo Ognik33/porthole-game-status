@@ -1,0 +1,21 @@
+# Профили игр для дополнения «Статус игры».
+#
+# Каждая секция — игра. adapter — модуль game_probe, который умеет её опрашивать
+# (в этой версии: minecraft). Остальное:
+#   label               подпись на плашке
+#   strong              если заголовок окна / имя программы содержит одну из строк — это точно игра
+#   maybe               возможно игра (лаунчеры, java.exe): порт сначала проверяется, показывается только
+#                       если ответил
+#   title_version       шаблон Lua для версии из заголовка, если сервер её не сообщает
+#   instance_from_title "Лаунчер: имя инстанса" -> имя инстанса как подпись версии
+
+[minecraft]
+label = "Minecraft"
+adapter = "minecraft"
+strong = ["Minecraft"]
+maybe = [
+  "MultiMC", "Prism Launcher", "PrismLauncher", "PolyMC", "ATLauncher", "TLauncher", "GDLauncher",
+  "javaw.exe", "java.exe",
+]
+title_version = "Minecraft%*?%s+([%w%.%-]+)"
+instance_from_title = true
